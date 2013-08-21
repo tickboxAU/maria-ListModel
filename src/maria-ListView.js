@@ -80,7 +80,7 @@ maria.ListView.prototype.handleChanged = function() {
 
         // If a version previously existed
         if (view) {
-            wbw.removeFromArray(oldViews, view);
+            oldViews.remove(oldViews.indexOf(view));
         } else {
             view = self.createChildView(model);
         }
