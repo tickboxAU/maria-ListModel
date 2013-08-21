@@ -78,7 +78,7 @@ maria.ListModel.prototype.clear = function() {
                 element.removeParentEventTarget(this);
             }
         }
-        this.dispatchEvent({type: 'change', newTargets: [], addedTargets: [], deletedTargets: deleted});
+        this.dispatchEvent({type: 'change', newTargets: [], deletedTargets: deleted});
     }
     return result;
 };
@@ -117,7 +117,7 @@ maria.ListModel.prototype['delete'] = function() {
     }
     var modified = deleted.length > 0;
     if (modified) {
-        this.dispatchEvent({type: 'change', addedTargets: [], deletedTargets: deleted});
+        this.dispatchEvent({type: 'change', deletedTargets: deleted});
     }
     return modified;
 };
@@ -148,7 +148,7 @@ maria.ListModel.prototype.add = function() {
     }
     var modified = added.length > 0;
     if (modified) {
-        this.dispatchEvent({type: 'change', addedTargets: added, deletedTargets: []});
+        this.dispatchEvent({type: 'change', addedTargets: added});
     }
     return modified;
 };

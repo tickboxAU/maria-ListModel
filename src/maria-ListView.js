@@ -71,7 +71,6 @@ maria.ListView.prototype.handleChanged = function() {
         } catch(err) {
             console.log('Unable to remove child view: ' + oldViews[i].build());
         }
-
     }
 
     var self = this;
