@@ -27,7 +27,7 @@ maria.ObjectList.prototype.reduce = function(callbackfn /*, initialValue */) {
         accumulator = arguments[1];
     }
     else if (ilen < 1) {
-        throw new TypeError('reduce of empty set with no initial value');
+        throw new TypeError('reduce of empty list with no initial value');
     }
     else {
         i = 1;

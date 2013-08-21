@@ -53,7 +53,7 @@ maria.ListModel.prototype.clear = function() {
                 element.removeParentEventTarget(this);
             }
         }
-        this.dispatchEvent({type: 'change', newChildrenList: [], addedTargets: [], deletedTargets: deleted});
+        this.dispatchEvent({type: 'change', newTargets: [], addedTargets: [], deletedTargets: deleted});
     }
     return result;
 };
@@ -62,7 +62,7 @@ maria.ListModel.prototype.handleEvent = function(evt) {
 
     // If it is a destroy event being dispatched on the
     // destroyed element then we want to remove it from
-    // this set.
+    // this list.
     if ((evt.type === 'destroy') &&
         (evt.currentTarget === evt.target)) {
         this['delete'](evt.target);

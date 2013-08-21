@@ -2,7 +2,7 @@ maria.SetView.subclass(maria, 'ListView');
 
 /**
 
-The handler for `change` events on this view's set model object.
+The handler for `change` events on this view's list model object.
 
 @param {Object} event The event object.
 
@@ -18,22 +18,8 @@ maria.ListView.prototype.update = function(evt) {
 };
 
 maria.ListView.prototype.setModel = function(newModel) {
-    this.clearChildViews();
     maria.SetView.prototype.setModel.call(this, newModel);
     this.handleChanged();
-};
-
-maria.ListView.prototype.clearChildViews = function(childView) {
-    // var oldViews = this.childNodes.slice(0);
-
-    // // Place old views into a set
-    // for (var i = 0, ilen = oldViews.length; i < ilen; i++) {
-    //     var oldView = oldViews[i];
-
-    //     // Remove the view from the DOM
-    //     this.removeChild(oldView);
-    //     oldView.destroy();
-    // }
 };
 
 maria.ListView.prototype.findModelViewInViews = function(model, views) {
