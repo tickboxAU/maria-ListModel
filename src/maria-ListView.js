@@ -37,7 +37,7 @@ The handler for `change` events on this view's list model object.
 maria.ListView.prototype.update = function(evt) {
     // Don't update for bubbling events.
     if (evt.target === this.getModel() &&
-        (evt.addedTargets !== undefined || evt.deletedTargets !== undefined || evt.newChildrenList !== undefined)) {
+        (evt.addedTargets !== undefined || evt.deletedTargets !== undefined || evt.newTargets !== undefined)) {
         this.handleChanged();
     }
 };
