@@ -1,9 +1,27 @@
+/**
+
+A constructor function for creating `ObjectList`
+
+*/
 maria.ObjectList = function() {
     this._maria_ListModel_elements = [];
 };
 
 maria.ObjectList.superConstructor = Object;
 
+/**
+
+Call a function over every element in this list.
+
+var alpha = {value: 0};
+var beta = {value: 1};
+var gamma = {value: 2};
+var list = new maria.ObjectList(alpha, beta, gamma);
+list.forEach(function(element) {
+    console.log(element.value);
+});
+
+*/
 maria.ObjectList.prototype.forEach = function(callbackfn /*, thisArg */) {
     var thisArg = arguments[1];
     var length = this._maria_ListModel_elements.length;
@@ -14,10 +32,31 @@ maria.ObjectList.prototype.forEach = function(callbackfn /*, thisArg */) {
     }
 };
 
+/**
+
+Returns the object list as an array
+
+*/
 maria.ObjectList.prototype.toArray = function() {
     return this._maria_ListModel_elements;
 };
 
+/**
+
+Calls an accumulating callback function over the object list.
+
+    var one = {value: 1};
+    var two = {value: 2};
+    var three = {value: 3};
+    var list = new maria.ObjectList(one, two, three);
+    list.reduce(function(accumulator, element) {
+        return {value: accumulator.value + element.value};
+    }); // {value:6}
+    list.reduce(function(accumulator, element) {
+        return accumulator + element.value;
+    }, 4); // 10
+
+*/
 maria.ObjectList.prototype.reduce = function(callbackfn /*, initialValue */) {
     var elements = this._maria_ListModel_elements;
     var i = 0;
@@ -40,6 +79,20 @@ maria.ObjectList.prototype.reduce = function(callbackfn /*, initialValue */) {
     return accumulator;
 };
 
+/**
+
+Returns the first element in the object list. 
+Optionally takes a function which returns a boolean to find the first element that satisfies its condition.
+
+
+var alpha = {value: 0};
+var beta = {value: 1};
+var gamma = {value: 2};
+var list = new maria.ObjectList(alpha, beta, gamma);
+console.log(list.first().value); // Outputs '0'
+console.log(list.first(function(element) {element.value > 0}).value); // Outputs '1'
+
+*/
 maria.ObjectList.prototype.first = function(callbackfn) {
     var length = this._maria_ListModel_elements.length;
 
@@ -57,6 +110,11 @@ maria.ObjectList.prototype.first = function(callbackfn) {
     return null;
 };
 
+/**
+
+Adds the element to the object list
+
+*/
 maria.ObjectList.prototype.add = function(element) {
     if (this.has(element)) {
         return false;
@@ -67,14 +125,30 @@ maria.ObjectList.prototype.add = function(element) {
     }
 };
 
+/**
+
+Returns the index of an element in the list.
+Will return -1 if the element doesn't exist
+
+*/
 maria.ObjectList.prototype.indexOf = function(element) {
     return this._maria_ListModel_elements.indexOf(element);
 };
 
+/**
+
+@property maria.LeafModel.superConstructor
+
+*/
 maria.ObjectList.prototype.has = function(element) {
     return this.indexOf(element) != -1;
 };
 
+/**
+
+Removes a specific element from the list
+
+*/
 maria.ObjectList.prototype['delete'] = function(element) {
     var index = this.indexOf(element);
     if (index != -1) {
@@ -83,6 +157,11 @@ maria.ObjectList.prototype['delete'] = function(element) {
     return index != -1;
 };
 
+/**
+
+Clears the list
+
+*/
 maria.ObjectList.prototype.clear = function() {
     if (this._maria_ListModel_elements.length > 0) {
         this._maria_ListModel_elements = [];
@@ -91,10 +170,20 @@ maria.ObjectList.prototype.clear = function() {
     return false;
 };
 
+/**
+
+Returns if the object list has no elements
+
+*/
 maria.ObjectList.prototype.isEmpty = function() {
     return this._maria_ListModel_elements.length === 0;
 };
 
+/**
+
+Mixes in the `ObjectList` methods into any object.
+
+*/
 maria.ObjectList.mixin = function(obj) {
     for (var p in maria.ObjectList.prototype) {
         if (Object.prototype.hasOwnProperty.call(maria.ObjectList.prototype, p) &&
