@@ -68,6 +68,68 @@ maria.ObjectList.prototype.toArray = function() {
 
 /**
 
+Calls `callbackfn` for each element of the set.
+
+    var one = {value: 1};
+    var two = {value: 2};
+    var three = {value: 3};
+    var set = new maria.ObjectList(one, two, three);
+    set.any(function(element) {
+        return element.value < 2;
+    }); // true
+
+@param {function} callbackfn The function to call for each element in the set.
+
+@param {Object} [thisArg] The object to use as the this object in calls to callbackfn.
+
+@return {boolean} `true` if `callbackfn` returns a truthy value for at least one element in the set. Otherwise `false`.
+
+*/
+
+maria.ObjectList.prototype.any = function(callbackfn /*, thisArg */) {
+    var thisArg = arguments[1];
+    var length = this._maria_ListModel_elements.length;
+    for (var i = 0; i < length; i++) {
+        if (Object.prototype.hasOwnProperty.call(this._maria_ListModel_elements, i) && callbackfn.call(thisArg, this._maria_ListModel_elements[i])) {
+            return true;
+        }
+    }
+    return false;
+};
+
+/**
+
+Calls `callbackfn` for each element of the set.
+
+    var one = {value: 1};
+    var two = {value: 2};
+    var three = {value: 3};
+    var set = new maria.ObjectList(one, two, three);
+    set.all(function(element) {
+        return element.value < 2;
+    }); // false
+
+@param {function} callbackfn The function to call for each element in the set.
+
+@param {Object} [thisArg] The object to use as the this object in calls to callbackfn.
+
+@return {boolean} `true` if `callbackfn` returns a truthy value for all elements in the set. Otherwise `false`.
+
+*/
+
+maria.ObjectList.prototype.all = function(callbackfn /*, thisArg */) {
+    var thisArg = arguments[1];
+    var length = this._maria_ListModel_elements.length;
+    for (var i = 0; i < length; i++) {
+        if (Object.prototype.hasOwnProperty.call(this._maria_ListModel_elements, i) && !callbackfn.call(thisArg, this._maria_ListModel_elements[i])) {
+            return false;
+        }
+    }
+    return true;
+};
+
+/**
+
 Calls an accumulating callback function over the object list.
 
     var one = {value: 1};
@@ -102,6 +164,51 @@ maria.ObjectList.prototype.reduce = function(callbackfn /*, initialValue */) {
         i++;
     }
     return accumulator;
+};
+
+/**
+
+Calls a mapping function over the object list.
+
+    var one = {value: 1};
+    var two = {value: 2};
+    var three = {value: 3};
+    var list = new maria.ObjectList(one, two, three);
+    list.map(function(element) {
+        return {value: element.value * 2};
+    }); // maria.ObjectList([{value:2}, {value:4}, {value:6}])
+    list.map(function(element) {
+        return element.value;
+    }); // maria.ObjectList([1, 2, 3])
+
+*/
+maria.ObjectList.prototype.map = function(callbackfn) {
+    return this.reduce(function(accumulator, element) {
+        accumulator.add(callbackfn(element));
+        return accumulator;
+    }, new this.constructor());
+};
+
+/**
+
+Calls a mapping function over the object list.
+
+    var one = {value: 1};
+    var two = {value: 2};
+    var three = {value: 3};
+    var list = new maria.ObjectList(one, two, three);
+    list.select(function(element) {
+        return element.value >= 2;
+    }); // maria.ObjectList([{value:2}, {value:3}])
+
+*/
+maria.ObjectList.prototype.select = function(callbackfn) {
+    return this.reduce(function(accumulator, element) {
+        if (callbackfn(element)) {
+            accumulator.add(element);
+        }
+        return accumulator;
+    }, new this.constructor());
 };
 
 /**
@@ -197,11 +304,20 @@ maria.ObjectList.prototype.clear = function() {
 
 /**
 
+Returns the number of elements in the object list
+
+*/
+maria.ObjectList.prototype.length = function() {
+    return this._maria_ListModel_elements.length;
+};
+
+/**
+
 Returns if the object list has no elements
 
 */
 maria.ObjectList.prototype.isEmpty = function() {
-    return this._maria_ListModel_elements.length === 0;
+    return this.length() === 0;
 };
 
 /**
